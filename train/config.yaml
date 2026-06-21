@@ -1,0 +1,31 @@
+# ===== Qwen-IE-Engineer-LoRA : training config =====
+# ปรับสำหรับ RTX 2070 (8GB, Turing) — QLoRA 4-bit, fp16
+
+model:
+  base_model: "Qwen/Qwen2.5-3B-Instruct"   # 3B เหมาะกับ 8GB (7B เสี่ยง OOM)
+  max_seq_len: 512                           # วัดจริง: token สูงสุดในดาต้า = 489 -> 512 พอ ประหยัด VRAM
+
+quantization:
+  load_in_4bit: true
+  bnb_4bit_compute_dtype: "float16"          # Turing ไม่รองรับ bf16 -> ใช้ fp16
+  bnb_4bit_quant_type: "nf4"
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: ["q_proj", "k_proj", "v_proj", "o_proj",
+                   "gate_proj", "up_proj", "down_proj"]
+
+train:
+  data_dir: "data"
+  output_dir: "outputs/qwen-ie-engineer-lora"
+  epochs: 1                                  # RTX 2070 ~5.3s/sample -> 1 epoch (~169 steps) ≈ 4 ชม.
+  per_device_batch_size: 1                   # 8GB -> batch 1
+  grad_accum: 16                             # effective batch = 16
+  lr: 0.0002
+  warmup_ratio: 0.03
+  logging_steps: 10
+  save_steps: 50                             # ~169 steps/epoch -> checkpoint ที่ 50/100/150 กันงานหาย
+  eval_steps: 50
+  gradient_checkpointing: true               # ประหยัด VRAM (แลกกับช้าลงนิด)
