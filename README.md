@@ -16,6 +16,8 @@ pipeline_tag: text-generation
 
 # Qwen-IE-Engineer-LoRA 🏭
 
+**🤗 Model weights:** [nattakit2580/qwen-ie-engineer-lora](https://huggingface.co/nattakit2580/qwen-ie-engineer-lora) · **💻 Code:** [github.com/nattakit2580/qwen-ie-engineer-lora](https://github.com/nattakit2580/qwen-ie-engineer-lora)
+
 > Enterprise-grade LoRA adapter that turns Qwen2.5-7B into an **Industrial Engineering (IE)
 > assistant** for factory / manufacturing. It solves IE calculations step by step and
 > suggests practical improvements (ECRS, Lean, SMED). Bilingual (EN/TH).
